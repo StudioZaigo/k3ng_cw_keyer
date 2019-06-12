@@ -1,5 +1,6 @@
 // Initial and hardcoded settings
-#define initial_speed_wpm 26             // "factory default" keyer speed setting
+// #define initial_speed_wpm 26             // "factory default" keyer speed setting
+#define initial_speed_wpm 22             // "factory default" keyer speed setting
 #define initial_command_mode_speed_wpm 20 // "factory default" command mode speed setting 
 #define initial_sidetone_freq 600        // "factory default" sidetone frequency setting
 #define sidetone_hz_limit_low 299
@@ -20,8 +21,10 @@
 #define initial_ptt_lead_time_tx6 0         // PTT lead time in mS
 #define initial_ptt_tail_time_tx6 10         // PTT tail time in mS
 #define initial_qrss_dit_length 1        // QRSS dit length in seconds
-#define initial_pot_wpm_low_value 13     // Potentiometer WPM fully CCW
-#define initial_pot_wpm_high_value 35    // Potentiometer WPM fully CW
+// #define initial_pot_wpm_low_value 13     // Potentiometer WPM fully CCW
+// #define initial_pot_wpm_high_value 35    // Potentiometer WPM fully CW
+#define initial_pot_wpm_low_value 15     // Potentiometer WPM fully CCW
+#define initial_pot_wpm_high_value 30    // Potentiometer WPM fully CW
 #define wpm_limit_low 5
 #define wpm_limit_high 60
 #define potentiometer_change_threshold 0.9 // don't change the keyer speed until pot wpm has changed more than this
@@ -270,4 +273,3 @@
 
 #define sidetone_volume_low_limit 10
 #define sidetone_volume_high_limit 500
-

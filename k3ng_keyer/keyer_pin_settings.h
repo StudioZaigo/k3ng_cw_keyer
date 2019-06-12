@@ -1,17 +1,21 @@
 /* Pins - you must review these and configure ! */
 #ifndef keyer_pin_settings_h
 #define keyer_pin_settings_h
-
-#define paddle_left 2
-#define paddle_right 5
-#define tx_key_line_1 11       // (high = key down/tx on)
+  
+// #define paddle_left 2
+// #define paddle_right 5
+#define paddle_left 6         // ja7fkf for jg5cbr CW shield
+#define paddle_right 7        // ja7fkf for jg5cbr CW shield
+// #define tx_key_line_1 11       // (high = key down/tx on)
+#define tx_key_line_1 13      // ja7fkf for jg5cbr CW shield
 #define tx_key_line_2 12
 #define tx_key_line_3 0
 #define tx_key_line_4 0
 #define tx_key_line_5 0
 #define tx_key_line_6 0
-#define sidetone_line 4         // connect a speaker for sidetone
-#define potentiometer A0        // Speed potentiometer (0 to 5 V) Use pot from 1k to 10k
+// #define sidetone_line 4     // connect a speaker for sidetone
+#define sidetone_line 9      // ja7fkf for jg5cbr CW shield
+#define potentiometer A0        // Speed potentiometer (0 t                                                                                                                           o 5 V) Use pot from 1k to 10k
 #define ptt_tx_1 0              // PTT ("push to talk") lines
 #define ptt_tx_2 0              //   Can be used for keying fox transmitter, T/R switch, or keying slow boatanchors
 #define ptt_tx_3 0              //   These are optional - set to 0 if unused
@@ -159,4 +163,3 @@ FEATURE_SIDETONE_SWITCH
   #error "Multiple pin_settings.h files included somehow..."
 
 #endif //keyer_pin_settings_h
-
