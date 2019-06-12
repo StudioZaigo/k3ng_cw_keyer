@@ -1208,7 +1208,8 @@ Recent Update History
   #include <Wire.h>
 #endif
 
-#if defined(FEATURE_LCD_ADAFRUIT_I2C) || defined(FEATURE_LCD_ADAFRUIT_BACKPACK) || defined(FEATURE_LCD_YDv1) || defined(FEATURE_LCD_SAINSMART_I2C) || defined(FEATURE_LCD_FABO_PCF8574) || defined(FEATURE_LCD_MATHERTEL_PCF8574)
+// JA7FKF for JG5CBR CW shield      Add "FEATURE_LCD_FABOmini_AQM0802A" to the next line
+#if defined(FEATURE_LCD_ADAFRUIT_I2C) || defined(FEATURE_LCD_ADAFRUIT_BACKPACK) || defined(FEATURE_LCD_YDv1) || defined(FEATURE_LCD_SAINSMART_I2C) || defined(FEATURE_LCD_FABO_PCF8574) || defined(FEATURE_LCD_FABOmini_AQM0802A) || defined(FEATURE_LCD_MATHERTEL_PCF8574)
   #include <Wire.h>
 #endif
 
@@ -1231,6 +1232,10 @@ Recent Update History
 
 #if defined(FEATURE_LCD_FABO_PCF8574)
   #include <FaBoLCD_PCF8574.h>
+#endif  
+
+#if defined(FEATURE_LCD_FABOmini_AQM0802A)
+  #include <FaBoLCDmini_AQM0802A.h>
 #endif  
 
 #if defined(FEATURE_LCD_MATHERTEL_PCF8574)
@@ -1647,6 +1652,10 @@ byte send_buffer_status = SERIAL_SEND_BUFFER_NORMAL;
 
 #if defined(FEATURE_LCD_FABO_PCF8574)
   FaBoLCD_PCF8574 lcd;
+#endif  
+
+#if defined(FEATURE_LCD_FABOmini_AQM0802A)
+  FaBoLCDmini_AQM0802A lcd;                   // JA7FKF for JG5CBR CW shield
 #endif  
 
 #if defined(FEATURE_LCD_MATHERTEL_PCF8574)
@@ -17023,7 +17032,8 @@ void ps2int_write() {
 void initialize_display(){
 
   #ifdef FEATURE_DISPLAY    
-    #if defined(FEATURE_LCD_SAINSMART_I2C)
+// JA7FKF     add "FEATURE_LCD_FABOmini_AQM0802A"  to the line below for JG5CBR  
+    #if defined(FEATURE_LCD_SAINSMART_I2C) || defined(FEATURE_LCD_FABOmini_AQM0802A)
       lcd.begin();
       lcd.home();
     #else
@@ -21166,4 +21176,3 @@ void update_time(){
 #endif // FEATURE_CLOCK
 // --------------------------------------------------------------   
 */
-

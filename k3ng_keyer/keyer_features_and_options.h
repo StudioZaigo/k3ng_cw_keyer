@@ -28,6 +28,7 @@
 // #define FEATURE_LCD1602_N07DH      // http://linksprite.com/wiki/index.php5?title=16_X_2_LCD_Keypad_Shield_for_Arduino
 // #define FEATURE_LCD_SAINSMART_I2C
 // #define FEATURE_LCD_FABO_PCF8574  // https://github.com/FaBoPlatform/FaBoLCD-PCF8574-Library
+#define FEATURE_LCD_FABOmini_AQM0802A  // JA7FKF for JG5CBR CW shield
 // #define FEATURE_LCD_MATHERTEL_PCF8574 // https://github.com/mathertel/LiquidCrystal_PCF8574
 // #define FEATURE_LCD_HD44780
 // #define FEATURE_CW_DECODER
