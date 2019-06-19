@@ -3680,14 +3680,19 @@ void check_ps2_keyboard()
             beep();
             #ifdef FEATURE_DISPLAY
               if (LCD_COLUMNS < 9){
-                lcd_center_print_timed("ST Pdl O", 0, default_display_msg_delay);
+//                lcd_center_print_timed("ST Pdl O", 0, default_display_msg_delay);   // JA7FKF
+                lcd_center_print_timed("Sidetone", 0, default_display_msg_delay);   // JA7FKF
+                lcd_center_print_timed("Pdl Only", 1, default_display_msg_delay);   // JA7FKF
               }            
-              if (LCD_COLUMNS > 19){
-                lcd_center_print_timed("Sidetone Paddle Only", 0, default_display_msg_delay);
-              } else {
-                lcd_center_print_timed("Sidetone", 0, default_display_msg_delay);
-                lcd_center_print_timed("Paddle Only", 1, default_display_msg_delay);
-              }
+              else {   // JA7FKF
+                if (LCD_COLUMNS > 19){
+                }
+                  lcd_center_print_timed("Sidetone Paddle Only", 0, default_display_msg_delay);
+                } else {
+                  lcd_center_print_timed("Sidetone", 0, default_display_msg_delay);
+                  lcd_center_print_timed("Paddle Only", 1, default_display_msg_delay);
+                }
+              }     // JA7FKF
             #endif
           } else {
             #ifdef FEATURE_DISPLAY
@@ -4235,7 +4240,9 @@ void check_ps2_keyboard()
             beep();
             #ifdef FEATURE_DISPLAY
               if (LCD_COLUMNS < 9){
-                lcd_center_print_timed("ST Pdl O", 0, default_display_msg_delay);
+//                lcd_center_print_timed("ST Pdl O", 0, default_display_msg_delay);
+                lcd_center_print_timed("Sidetone", 0, default_display_msg_delay);
+                lcd_center_print_timed("Pdl Only", 1, default_display_msg_delay);
               }
               if (LCD_COLUMNS > 19){
                 lcd_center_print_timed("Sidetone Paddle Only", 0, default_display_msg_delay);
@@ -6740,8 +6747,10 @@ void command_mode()
 // end new code
 
     #ifdef DEBUG_COMMAND_MODE
-      debug_serial_port->print(F("command_mode: cwchar: "));
-      debug_serial_port->println(cw_char);
+      if (cw_char != 0) {   // JA7FKF
+        debug_serial_port->print(F("command_mode: cwchar: "));
+        debug_serial_port->println(cw_char);
+      }     // JA7FKF
     #endif
     if (cw_char > 0) {              // do the command      
       switch (cw_char) {
@@ -6937,14 +6946,18 @@ void command_mode()
           } else if (configuration.sidetone_mode == SIDETONE_ON) {
             #ifdef FEATURE_DISPLAY
               if (LCD_COLUMNS < 9){
-                lcd_center_print_timed("ST Pdl O", 0, default_display_msg_delay);
+//                lcd_center_print_timed("ST Pdl O", 0, default_display_msg_delay);       // JA7FKF
+                lcd_center_print_timed("Sidetone", 0, default_display_msg_delay);         // JA7FKF
+                lcd_center_print_timed("Pdl Only", 1, default_display_msg_delay);         // JA7FKF
               }
-              if (LCD_COLUMNS > 19){
-                lcd_center_print_timed("Sidetone Paddle Only", 0, default_display_msg_delay);
-              } else {
-                lcd_center_print_timed("Sidetone", 0, default_display_msg_delay);
-                lcd_center_print_timed("Paddle Only", 1, default_display_msg_delay);
-              }
+              else {    // JA7FKF
+                if (LCD_COLUMNS > 19){
+                  lcd_center_print_timed("Sidetone Paddle Only", 0, default_display_msg_delay);
+                } else {
+                  lcd_center_print_timed("Sidetone", 0, default_display_msg_delay);
+                  lcd_center_print_timed("Paddle Only", 1, default_display_msg_delay);
+                }
+              }      // JA7FKF
             #endif 
             #ifdef DEBUG_COMMAND_MODE
               debug_serial_port->println(F("command_mode: SIDETONE_PADDLE_ONLY"));
@@ -8106,6 +8119,19 @@ void initialize_analog_button_array() {
     setOneButton(9,4); 
       
   #endif //FEATURE_DL2SBA_BANKSWITCH
+
+// JA7FKF for JG5CBR CW shield Start
+  #ifdef FEATURE_DIGITAL_COMMAND_BUTTONS
+    byte digital_pins [] = digital_buttons_pin;
+
+//    if sizeof(digital_pins) / sizeof(byte) != analog_buttons_number_of_buttons {
+//      debug_serial_port->println("digitalButtons number error: ");
+//    }
+    for (byte x = 0; x < analog_buttons_number_of_buttons; x++) {
+      pinMode(digital_pins[x], INPUT_PULLUP);
+      }
+  #endif      // FEATURE_DIGITAL_COMMAND_BUTTONS
+// JA7FKF for JG5CBR CW shield  End
 #endif //FEATURE_COMMAND_BUTTONS
 }
 
@@ -8166,6 +8192,38 @@ byte analogbuttonpressed() {
 
   #else  // OPTION_DFROBOT_LCD_COMMAND_BUTTONS
   
+// JA7FKF for JG5CBR CW shield Start
+    #ifdef FEATURE_DIGITAL_COMMAND_BUTTONS
+      byte digital_pins [] = digital_buttons_pin;
+      unsigned long timeStartSw;
+
+      for (byte x = 0; x < sizeof(digital_pins); x++) {
+        if (digitalRead(digital_pins[x]) == LOW) {    // button was pressed
+          #ifdef DEBUG_BUTTONS
+            debug_serial_port->print(F(" digitalbuttonpressed: pin low: "));
+            debug_serial_port->println(digital_pins[x]);
+          #endif
+          timeStartSw = millis();
+          delay(chattering_cancel_duration + 1);
+//          while ((digitalRead(digital_pins[x]) == LOW) && (millis() - timeStartSw < chattering_cancel_duration))
+//          if (millis() - timeStartSw > chattering_cancel_duration) {   // button was released
+            
+          if ((digitalRead(digital_pins[x]) == LOW) && (millis() - timeStartSw >= chattering_cancel_duration)) {   // button was released
+            #ifdef DEBUG_BUTTONS
+              debug_serial_port->print(F(" degitalbuttonpressed: returning: "));
+              debug_serial_port->print(x);
+              debug_serial_port->print(F(" pressed period: "));
+              debug_serial_port->println(millis() - timeStartSw);              
+            #endif         
+            return x;
+          }
+        }    
+      }
+      return 255;
+    #endif
+// for JA7FKF for JG5CBR CW shield End
+    
+
     #if !defined(OPTION_REVERSE_BUTTON_ORDER)
       if (analogRead(analog_buttons_pin) <= button_array_high_limit[analog_buttons_number_of_buttons-1]) {
         
@@ -8296,7 +8354,23 @@ byte analogbuttonread(byte button_number) {
     #ifdef DEBUG_BUTTONS
       static byte debug_flag = 0;
     #endif
-    
+
+// JA7FKF for JG5CBR CW shield Start
+    #ifdef FEATURE_DIGITAL_COMMAND_BUTTONS
+      byte digital_pins [] = digital_buttons_pin;
+      unsigned long timeStartSw;
+
+      timeStartSw = millis();
+      while (digitalRead(digital_pins[button_number]) == LOW) {
+        delay(1);    
+      }
+      if (millis() - timeStartSw > chattering_cancel_duration)   // button was released
+        return 1;
+      else
+        return 0;
+    #endif
+// JA7FKF for JG5CBR CW shield End
+
     if (analog_line_read < 1000) {  
       if ((analog_line_read > button_array_low_limit[button_number]) && (analog_line_read <  button_array_high_limit[button_number])) {
         #ifdef DEBUG_BUTTONS
@@ -15058,7 +15132,6 @@ void serial_program_memory(PRIMARY_SERIAL_CLS * port_to_use)
   uint8_t incoming_serial_byte_buffer[serial_program_memory_buffer_size];
   unsigned int incoming_serial_byte_buffer_size = 0;
 
-
   while (looping){
     if (keyer_machine_mode == KEYER_NORMAL) {          // might as well do something while we're waiting
       check_paddles();
@@ -17585,14 +17658,18 @@ void KbdRptParser::OnKeyDown(uint8_t mod, uint8_t key)
           beep();
           #ifdef FEATURE_DISPLAY
             if (LCD_COLUMNS < 9){
-              lcd_center_print_timed("ST Pdl O", 0, default_display_msg_delay);
-            }          
-            if (LCD_COLUMNS > 19){
-              lcd_center_print_timed("Sidetone Paddle Only", 0, default_display_msg_delay);
-            } else {
-              lcd_center_print_timed("Sidetone", 0, default_display_msg_delay);
-              lcd_center_print_timed("Paddle Only", 1, default_display_msg_delay);
+//              lcd_center_print_timed("ST Pdl O", 0, default_display_msg_delay);   //JA7FKF
+              lcd_center_print_timed("Sidetone", 0, default_display_msg_delay);   //JA7FKF
+              lcd_center_print_timed("Pdl Only", 1, default_display_msg_delay);   //JA7FKF
             }
+            else {             //JA7FKF
+              if (LCD_COLUMNS > 19){
+                lcd_center_print_timed("Sidetone Paddle Only", 0, default_display_msg_delay);
+              } else {
+                lcd_center_print_timed("Sidetone", 0, default_display_msg_delay);
+                lcd_center_print_timed("Paddle Only", 1, default_display_msg_delay);
+              }
+            }     //JA7FKF
           #endif      
         } else {
           #ifdef FEATURE_DISPLAY

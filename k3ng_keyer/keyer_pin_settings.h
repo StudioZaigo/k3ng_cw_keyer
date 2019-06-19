@@ -4,17 +4,17 @@
   
 // #define paddle_left 2
 // #define paddle_right 5
-#define paddle_left 6         // ja7fkf for jg5cbr CW shield
-#define paddle_right 7        // ja7fkf for jg5cbr CW shield
+#define paddle_left 6         // JA7FKF for JG5CBR CW Shield
+#define paddle_right 7        // JA7FKF for JG5CBR CW Shield
 // #define tx_key_line_1 11       // (high = key down/tx on)
-#define tx_key_line_1 13      // ja7fkf for jg5cbr CW shield
+#define tx_key_line_1 13      // JA7FKF for JG5CBR CW Shield
 #define tx_key_line_2 12
 #define tx_key_line_3 0
 #define tx_key_line_4 0
 #define tx_key_line_5 0
 #define tx_key_line_6 0
 // #define sidetone_line 4     // connect a speaker for sidetone
-#define sidetone_line 9      // ja7fkf for jg5cbr CW shield
+#define sidetone_line 9      // JA7FKF for JG5CBR CW Shield
 #define potentiometer A0        // Speed potentiometer (0 t                                                                                                                           o 5 V) Use pot from 1k to 10k
 #define ptt_tx_1 0              // PTT ("push to talk") lines
 #define ptt_tx_2 0              //   Can be used for keying fox transmitter, T/R switch, or keying slow boatanchors
@@ -29,7 +29,11 @@
 
 #ifdef FEATURE_COMMAND_BUTTONS
   #define analog_buttons_pin A1
-  #define command_mode_active_led 0
+  #define command_mode_active_led 8
+  #ifdef FEATURE_DIGITAL_COMMAND_BUTTONS      // JA7FKF for JG5CBR CW Shield
+    #define digital_buttons_pin {5,4,3,2}     // JA7FKF for JG5CBR CW Shield
+    #define chattering_cancel_duration 20     // JA7FKF for JG5CBR CW Shield  (mSec)    
+  #endif //FEATURE_DIGITAL_COMMAND_BUTTONS    // JA7FKF for JG5CBR CW Shield
 #endif //FEATURE_COMMAND_BUTTONS
 
 /*

@@ -71,6 +71,8 @@
 #define serial_program_memory_buffer_size 500
 #define eeprom_write_time_ms 30000
 
+// JA7FKF for JG5CBR CW shield
+// The number of digital buttons is regarded as the same as the number of analog buttons
 #ifdef FEATURE_COMMAND_BUTTONS
   #define analog_buttons_number_of_buttons 4  // includes the command button (command button + 3 memory buttons = 4)
   #define analog_buttons_r1 10
